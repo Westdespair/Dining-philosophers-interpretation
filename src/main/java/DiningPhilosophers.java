@@ -1,0 +1,2 @@
+public class DiningPhilosophers {
+}

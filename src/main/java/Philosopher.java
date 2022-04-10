@@ -3,9 +3,10 @@ public class Philosopher implements Runnable {
     private int starvation = 0;
     private int starvationLimit = 100;
     private int starvationRate = 1;
-    private int eatingRate = 1;
+    private int eatingRate = 2;
     private boolean isAlive = true;
-    private enum State {THINKING, EATING, HUNGRY, DEAD};
+    public boolean permissionToEat = false;
+    public enum State {THINKING, EATING, HUNGRY, DEAD};
     private State currentState = State.THINKING;
     private final String[] nameList = new String[]{"Plato", "Aristotle", "Diogenes", "Nietsche", "Confusius",
             "Sigmund Freud", "Immanuel Kant", "Rene Descartes", "Immanuel Kant", "Sindre", "Malin", "Jonas" };
@@ -47,7 +48,7 @@ public class Philosopher implements Runnable {
      * @param name the name of the philosopher.
      */
     public Philosopher(String name) {
-        name = this.name;
+        this.name = name;
     }
 
     /**
@@ -74,16 +75,16 @@ public class Philosopher implements Runnable {
         starve();
         setCurrentState();
         switch(currentState) {
-            case THINKING:
-                break;
+           // case THINKING:
+            //    break;
 
-            case HUNGRY:
-                break;
+           // case HUNGRY:
+           //    break;
 
             case EATING:
                 eat();
-                if(starvation == 0) {
-
+                if(starvation <= 0) {
+                    setCurrentState();
                 }
                 break;
 
@@ -101,6 +102,9 @@ public class Philosopher implements Runnable {
 
             if(hungerLimit < starvation && currentState != State.EATING) {
                 currentState = State.HUNGRY;
+                if(permissionToEat){
+                    currentState = State.EATING;
+                }
 
                 if(starvationLimit <= starvation) {
                     currentState = State.DEAD;
@@ -149,4 +153,16 @@ public class Philosopher implements Runnable {
     public void eat() {
         starvation -= eatingRate;
     }
-}
+
+    public State getCurrentState() {
+        return this.currentState;
+    }
+
+    public void getPermissionToEat () {
+        permissionToEat = true;
+    }
+
+    public void losePermissionToEat (){
+        permissionToEat = false;
+    }
+ }

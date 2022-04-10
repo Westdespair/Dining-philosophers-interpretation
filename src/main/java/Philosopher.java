@@ -7,7 +7,7 @@ public class Philosopher implements Runnable {
     private boolean isAlive = true;
     public boolean permissionToEat = false;
     public enum State {THINKING, EATING, HUNGRY, DEAD};
-    private State currentState = State.THINKING;
+    private State currentState;
     private final String[] nameList = new String[]{"Plato", "Aristotle", "Diogenes", "Nietsche", "Confusius",
             "Sigmund Freud", "Immanuel Kant", "Rene Descartes", "Immanuel Kant", "Sindre", "Malin", "Jonas" };
 
@@ -23,7 +23,7 @@ public class Philosopher implements Runnable {
                 printStatus();
             }
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -75,17 +75,8 @@ public class Philosopher implements Runnable {
         starve();
         setCurrentState();
         switch(currentState) {
-           // case THINKING:
-            //    break;
-
-           // case HUNGRY:
-           //    break;
-
             case EATING:
                 eat();
-                if(starvation <= 0) {
-                    setCurrentState();
-                }
                 break;
 
             case DEAD:
@@ -100,6 +91,7 @@ public class Philosopher implements Runnable {
     private void setCurrentState() {
         int hungerLimit = (int)(starvationLimit/2);
 
+            //If the philosopher is starving more than their limit and is currently not eating, set their state to hungry
             if(hungerLimit < starvation && currentState != State.EATING) {
                 currentState = State.HUNGRY;
                 if(permissionToEat){
@@ -112,24 +104,6 @@ public class Philosopher implements Runnable {
 
             } else {
                 currentState = State.THINKING;
-            }
-        }
-
-        public void forceState(State state) {
-            switch(state) {
-                case THINKING:
-                    currentState = State.THINKING;
-                    break;
-                case HUNGRY:
-                    currentState = State.HUNGRY;
-                    break;
-
-                case EATING:
-                    currentState = State.EATING;
-
-                case DEAD:
-                    currentState = State.DEAD;
-                    break;
             }
         }
 
@@ -156,6 +130,10 @@ public class Philosopher implements Runnable {
 
     public State getCurrentState() {
         return this.currentState;
+    }
+
+    public boolean isEating() {
+        return getCurrentState() == State.EATING;
     }
 
     public void getPermissionToEat () {

@@ -3,7 +3,7 @@ import java.util.ListIterator;
 
 public class DiningTable {
     private ArrayList<Philosopher> philosopherList = new ArrayList<>();
-    public final int tableLimit = 100;
+    public final int tableLimit = 5;
     private ListIterator<Philosopher>iterator = philosopherList.listIterator();
 
 
@@ -45,16 +45,16 @@ public class DiningTable {
      */
     public void setEatingPermission(int index){
         Philosopher targetPhilosopher = getPhilosopher(index);
-        Philosopher leftPhilosopher = philosopherList.get((index + philosopherList.size()+1) % philosopherList.size());
-        Philosopher rightPhilosopher = philosopherList.get((index + philosopherList.size()-1) % philosopherList.size());
+        Philosopher leftPhilosopher = philosopherList.get((index + philosopherList.size() - 1) % philosopherList.size());
+        Philosopher rightPhilosopher = philosopherList.get((index + 1) % philosopherList.size());
 
-        if (philosopherList.size() < index) {
-            index = 0;
-        }
-        targetPhilosopher.losePermissionToEat();
-
-        if(leftPhilosopher.getCurrentState() != Philosopher.State.EATING && rightPhilosopher.getCurrentState() != Philosopher.State.EATING) {
-            targetPhilosopher.getPermissionToEat();
+        //Give the given philosopher permission to eat, but revoke it if any of their neighbours are eating.
+        targetPhilosopher.getPermissionToEat();
+        if(leftPhilosopher.isEating() || rightPhilosopher.isEating()) {
+            targetPhilosopher.losePermissionToEat();
+        } else {
+            leftPhilosopher.losePermissionToEat();
+            rightPhilosopher.losePermissionToEat();
         }
     }
 }

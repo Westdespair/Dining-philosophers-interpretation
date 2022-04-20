@@ -1,12 +1,18 @@
 import java.util.ArrayList;
-import java.util.ListIterator;
 
+/**
+ * Seats an amount of Philosopher instances around a table.
+ * Contains logic to give and revoke philosophers permission to eat.
+ */
 public class DiningTable {
     private ArrayList<Philosopher> philosopherList = new ArrayList<>();
     public final int tableLimit = 5;
-    private ListIterator<Philosopher>iterator = philosopherList.listIterator();
 
-
+    /**
+     * Constructor for the class DiningTable.
+     * Creates an instance of DiningTable, and generates a given amount of Philosopher instances around the table.
+     * @param philosopherAmount The amount of philosophers to be seated around the table
+     */
     public DiningTable(int philosopherAmount) {
         int i = 0;
 
@@ -19,10 +25,19 @@ public class DiningTable {
         }
     }
 
+    /**
+     * Returns the given philosopher on the index of the philosopherlist.
+     * @param index
+     * @return
+     */
     public Philosopher getPhilosopher (int index) {
         return philosopherList.get(index);
     }
 
+    /**
+     * Checks if every single philosopher seated at the table is dead.
+     * @return True if everyone is dead, false if at least one philosopher is alive.
+     */
     public boolean everyoneIsDead() {
       boolean everyoneIsDead = false;
       int deadAmount = 0;
@@ -41,7 +56,7 @@ public class DiningTable {
     /**
      * Checks if the adjacent philosophers on the table are eating.
      * If none are eating, grant eating permission to the given philosopher
-     * @param index
+     * @param index The given Philosopher instance in the list.
      */
     public void setEatingPermission(int index){
         Philosopher targetPhilosopher = getPhilosopher(index);
@@ -53,6 +68,7 @@ public class DiningTable {
         if(leftPhilosopher.isEating() || rightPhilosopher.isEating()) {
             targetPhilosopher.losePermissionToEat();
         } else {
+            //Index philosopher now has permission to eat, and the permission is revoked from the adjacent philosophers.
             leftPhilosopher.losePermissionToEat();
             rightPhilosopher.losePermissionToEat();
         }

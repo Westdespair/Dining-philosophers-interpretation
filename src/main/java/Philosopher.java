@@ -19,6 +19,7 @@ public class Philosopher implements Runnable {
         while (isAlive) {
             State previousState = currentState;
             act();
+            //Only prints the status if it has changed.
             if(currentState != previousState) {
                 printStatus();
             }
@@ -52,7 +53,6 @@ public class Philosopher implements Runnable {
     }
 
     /**
-     *
      * @param index the index of the name to be used. If the index is too high, do nothing.
      * @return true if the name was successfully changed, false if not.
      */
@@ -70,6 +70,10 @@ public class Philosopher implements Runnable {
         return this.name;
     }
 
+    /**
+     * Increments the philosophers hunger, and sets the new state based on the current hunger.
+     * If the philosopher is eating or dead, do appropriate actions for those states.
+     */
     private void act() {
         //Hunger is always growing
         starve();

@@ -11,6 +11,7 @@ public class DiningPhilosophers extends Thread {
     public static void main(String[] args) {
         int diners = 5;
 
+        //Creates a threadpool for the philosophers, and initializes a table for them.
         ExecutorService threadExecutor = Executors.newFixedThreadPool(diners);
         DiningTable diningTable = new DiningTable(diners);
 
